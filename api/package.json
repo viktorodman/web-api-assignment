@@ -4,7 +4,9 @@
   "description": "Rest API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node src/server.ts",
+    "start": "ts-node dist/server.js",
+    "build": "tsc -p ."
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +21,11 @@
     "morgan": "^1.10.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^8.0.0"
   }
 }
