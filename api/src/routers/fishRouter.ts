@@ -1,9 +1,9 @@
-import IRouter  from "../interfaces/IRouter"
 import * as express from 'express'
-import IndexController from "../controllers/indexController"
+import IRouter  from "../interfaces/IRouter"
+import FishController from "controllers/fishController"
 
-export default class IndexRouter implements IRouter{
-    indexController: IndexController = new IndexController()
+export default class FishRouter implements IRouter{
+    indexController: FishController = new FishController()
     expressRouter: express.Router = express.Router()
     baseURL: string
     public constructor (baseURL: string) {

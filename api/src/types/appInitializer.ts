@@ -1,7 +1,7 @@
 import IRouter from "interfaces/IRouter";
 
 export default interface AppInit {
-    port: number
-    routers: Array<IRouter>
-    middleWares: Array<any>
+    readonly port: number
+    readonly routers: Array<IRouter>
+    readonly middleWares: Array<any>
 }
