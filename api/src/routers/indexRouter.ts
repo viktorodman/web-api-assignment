@@ -3,7 +3,7 @@ import IRouter  from "../interfaces/IRouter"
 import IndexController from "../controllers/indexController"
 
 export default class IndexRouter implements IRouter{
-    indexController: IndexController = new IndexController()
+    controller: IndexController = new IndexController()
     expressRouter: express.Router = express.Router()
     baseURL: string
     public constructor (baseURL: string) {
@@ -12,7 +12,7 @@ export default class IndexRouter implements IRouter{
     }
 
     public initializeRoutes(): void {
-        this.expressRouter.get('/', (req, res, next) => this.indexController.index(req, res, next))
-        this.expressRouter.get('/v1', (req, res, next) => this.indexController.version(req, res, next))
+        this.expressRouter.get('/', (req, res, next) => this.controller.index(req, res, next))
+        this.expressRouter.get('/v1', (req, res, next) => this.controller.version(req, res, next))
     }
 }

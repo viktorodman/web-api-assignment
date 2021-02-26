@@ -3,7 +3,7 @@ import IRouter  from "../interfaces/IRouter"
 import FishController from "../controllers/fishController"
 
 export default class FishRouter implements IRouter{
-    indexController: FishController = new FishController()
+    controller: FishController = new FishController()
     expressRouter: express.Router = express.Router()
     baseURL: string
     public constructor (baseURL: string) {
@@ -12,7 +12,7 @@ export default class FishRouter implements IRouter{
     }
 
     public initializeRoutes(): void {
-        this.expressRouter.get('/', (req, res, next) => this.indexController.index(req, res, next))
-        this.expressRouter.get('/:species', (req, res, next) => this.indexController.version(req, res, next))
+        this.expressRouter.get('/', (req, res, next) => this.controller.index(req, res, next))
+        this.expressRouter.get('/:species', (req, res, next) => this.controller.version(req, res, next))
     }
 }
