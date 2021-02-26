@@ -7,6 +7,7 @@ import IndexRouter from './routers/indexRouter'
 import FishRouter from './routers/fishRouter'
 import AuthRouter from './routers/authRouter'
 import { connectDB } from './config/mongoose'
+import UserRouter from './routers/userRouter'
 
 dotenv.config()
 
@@ -20,7 +21,8 @@ const main = async () => {
         routers: [
             new IndexRouter('/'),
             new FishRouter('/v1/fish'),
-            new AuthRouter('/v1/auth')
+            new AuthRouter('/v1/auth'),
+            new UserRouter('/v1/users')
         ],
         middleWares: [
             helmet(),
