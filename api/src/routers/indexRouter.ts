@@ -1,5 +1,5 @@
-import IRouter  from "../interfaces/IRouter"
 import * as express from 'express'
+import IRouter  from "../interfaces/IRouter"
 import IndexController from "../controllers/indexController"
 
 export default class IndexRouter implements IRouter{
