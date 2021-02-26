@@ -10,7 +10,7 @@ export default class App {
         // Empty
     }
 
-    public run(): void {
+    public run() {
         this.setUpMiddlewares()
         this.setUpRouter()
         this.listen()

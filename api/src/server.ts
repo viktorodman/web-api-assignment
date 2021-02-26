@@ -6,22 +6,33 @@ import App from './app'
 import IndexRouter from './routers/indexRouter'
 import FishRouter from './routers/fishRouter'
 import AuthRouter from './routers/authRouter'
+import { connectDB } from './config/mongoose'
 
 dotenv.config()
 
-const app = new App({
-    port: process.env.PORT,
-    routers: [
-        new IndexRouter('/'),
-        new FishRouter('/v1/fish'),
-        new AuthRouter('/v1/auth')
-    ],
-    middleWares: [
-        helmet(),
-        logger('dev'),
-        express.json(),
-        express.urlencoded({ extended: true })
-    ]
-})
+const main = async () => {
 
-app.run()
+    await connectDB()
+        
+
+    const app = new App({
+        port: process.env.PORT,
+        routers: [
+            new IndexRouter('/'),
+            new FishRouter('/v1/fish'),
+            new AuthRouter('/v1/auth')
+        ],
+        middleWares: [
+            helmet(),
+            logger('dev'),
+            express.json(),
+            express.urlencoded({ extended: true })
+        ]
+    })
+    
+    app.run()
+}
+
+main().catch(console.error)
+
+
