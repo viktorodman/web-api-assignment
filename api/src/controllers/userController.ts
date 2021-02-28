@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
+
+
 import User, { IUser } from '../models/user'
 
 export default class UserController {
@@ -9,34 +11,30 @@ export default class UserController {
     }
 
     public async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const username = this.getRequestUsername(req)
-            const password = this.getRequestPassword(req)
-
+        try {     
             const user = await User.create({
-                username,
-                password
+                username: this.getRequestUsername(req),
+                password: this.getRequestPassword(req)
             })
-            res.json(`Created User: ${user.username}`)
+            res.status(201).json({ username: user.username, message: `Created User: ${user.username}`})
         } catch (error) {
-            console.log(res)
-            if (error.code === 11000) {
-                res.json({
-                    status: 409,
-                    message: 'User already registered'
-                })
-            } else if (error.name === 'ValidationError') {
-                console.log(error.message)
-                res.json({
-                    status: 400,
-                    message: error.message
-                })
-            } else {
-                console.log(error.name)
-                res.json({error})
-            }
+            this.handleUserCreationErrors(res, error)
         }
        
+    }
+
+    private handleUserCreationErrors(res: Response, error: any): void {
+        if (error.name === 'ConflictError') {
+           this.sendErrorResponse(res, error.status, error.message)     
+        } else if (this.isValidationError(error)) {
+            this.sendErrorResponse(res, 400, error.message)
+        } else {
+            this.sendErrorResponse(res, 400, 'Something went wrong')
+        }
+    }
+
+    private sendErrorResponse(res: Response, status: number, message: string) {
+        res.status(status).json({ status, message})
     }
 
     private getRequestUsername(req: Request): string {
@@ -45,5 +43,9 @@ export default class UserController {
 
     private getRequestPassword(req: Request): string {
         return req.body.password
+    }
+
+    private isValidationError(error: any): boolean {
+        return error.name === 'ValidationError'
     }
 }
