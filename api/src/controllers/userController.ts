@@ -24,17 +24,22 @@ export default class UserController {
     }
 
     private handleUserCreationErrors(res: Response, error: any): void {
+        console.log(error.name)
         if (error.name === 'ConflictError') {
-           this.sendErrorResponse(res, error.status, error.message)     
-        } else if (this.isValidationError(error)) {
-            this.sendErrorResponse(res, 400, error.message)
+            this.sendErrorResponse(res, error.status, error.name , error.message)     
+        } else if (error.name === 'BadRequestError') {
+            this.sendErrorResponse(res, error.status, error.name , error.message)
         } else {
-            this.sendErrorResponse(res, 400, 'Something went wrong')
+            this.sendErrorResponse(res, 400, 'BadRequestError', 'Something went wrong')
         }
     }
 
-    private sendErrorResponse(res: Response, status: number, message: string) {
-        res.status(status).json({ status, message})
+    private sendErrorResponse(res: Response, status: number, error: any , message: string) {
+        res.status(status).json({
+            status,
+            error,
+            message
+        })
     }
 
     private getRequestUsername(req: Request): string {

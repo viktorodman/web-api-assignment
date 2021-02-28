@@ -28,8 +28,9 @@ UserSchema.pre<IUser>('save', async function () {
 })
 
 UserSchema.post('save', function(error, doc, next) {
-    if (error.name === 'MongoError' && error.code === 11000) {
-        /* next(createError(409, 'User already exist')) */
+    if (error.name === 'ValidationError') {
+        next(new createError.BadRequest(error.message))
+    } else if (error.name === 'MongoError' && error.code === 11000) {
         next(new createError.Conflict('User already exist'))
     } else {
         next()
