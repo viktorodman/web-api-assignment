@@ -9,7 +9,7 @@ export interface IUser extends mongoose.Document {
 }
 
 export interface IUserModel extends mongoose.Model<IUser> {
-    authenticate(username: string, password: string): Promise<void>
+    authenticate(username: string, password: string): Promise<IUser>
 }
 
 export const UserSchema = new mongoose.Schema({

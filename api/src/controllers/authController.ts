@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user";
+import * as jwt from 'jsonwebtoken'
+import Payload from "types/payload";
 
 
 export default class AuthController {
@@ -8,7 +10,19 @@ export default class AuthController {
 
         try {
             const user = await User.authenticate(req.body.username, req.body.password)
-            res.json('From auth controller')
+            
+            const payload: Payload = { username: user.username}
+
+            const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+                algorithm: 'HS256',
+                expiresIn: Math.floor(Date.now() / 1000) + (60 * 60)
+            })
+
+            res
+            .status(201)
+            .json({
+                access_token: accessToken
+            })
         } catch (error) {
             res.status(error.status).json({
                 status: error.status,
