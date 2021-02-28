@@ -8,6 +8,10 @@ export interface IUser extends mongoose.Document {
     password: string
 }
 
+export interface IUserModel extends mongoose.Model<IUser> {
+    authenticate(username: string, password: string): Promise<void>
+}
+
 export const UserSchema = new mongoose.Schema({
     username: { 
         type: String,
@@ -38,6 +42,18 @@ UserSchema.post('save', function(error, doc, next) {
 })
 
 
-const User = mongoose.model<IUser>('User', UserSchema)
+UserSchema.statics.authenticate = async function(username, password) {
+    const user = await this.findOne({ username })
+
+    if (!user || !(await bcrypt.compare(password, user.get('password')))) {
+        /* throw new Error('Invalid username or password.') */
+        throw new createError.Unauthorized('Invalid username or password.')
+    }
+
+    return user
+}
+
+
+const User: IUserModel = mongoose.model<IUser, IUserModel>('User', UserSchema)
 
 export default User

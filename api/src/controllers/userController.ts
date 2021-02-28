@@ -1,7 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-
-
-
 import User, { IUser } from '../models/user'
 
 export default class UserController {
@@ -24,7 +21,6 @@ export default class UserController {
     }
 
     private handleUserCreationErrors(res: Response, error: any): void {
-        console.log(error.name)
         if (error.name === 'ConflictError') {
             this.sendErrorResponse(res, error.status, error.name , error.message)     
         } else if (error.name === 'BadRequestError') {
