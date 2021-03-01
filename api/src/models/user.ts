@@ -6,10 +6,12 @@ import * as createError from 'http-errors'
 export interface IUser extends mongoose.Document {
     username: string
     password: string
+    permission: 'admin' | 'normal' | 'banned'
 }
 
 export interface IUserModel extends mongoose.Model<IUser> {
-    authenticate(username: string, password: string): Promise<IUser>
+    authenticate(username: string, password: string): Promise<IUser>,
+    getAll(): Promise<IUser>
 }
 
 export const UserSchema = new mongoose.Schema({
@@ -23,6 +25,11 @@ export const UserSchema = new mongoose.Schema({
         type: String, 
         minlength: [10, 'Password must be at least 10 characters'],
         required: [true, 'Password is required']
+    },
+    permission: {
+        type: String,
+        enum: ['admin', 'normal', 'banned'],
+        required: true
     }
 }, {timestamps: true}
 )
@@ -41,6 +48,9 @@ UserSchema.post('save', function(error, doc, next) {
     }
 })
 
+UserSchema.statics.getAll = async function() {
+    return this.find({})
+}
 
 UserSchema.statics.authenticate = async function(username, password) {
     const user = await this.findOne({ username })

@@ -1,3 +1,4 @@
 export default interface Payload  {
-    username
+    username: string
+    permission: 'admin' | 'normal' | 'banned'
 }

@@ -6,10 +6,11 @@ import User, { IUser } from '../models/user'
 
 export default class UserController {
 
-    public getAllUsers(req, res: Response, next: NextFunction): void {
+    public async getAllUsers(req, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log(req.user)
-            req
+            const users = await User.getAll()
+
+            res.json({users})
         } catch (error) {
             
             res.json(error)
@@ -20,7 +21,8 @@ export default class UserController {
         try {     
             const user = await User.create({
                 username: this.getRequestUsername(req),
-                password: this.getRequestPassword(req)
+                password: this.getRequestPassword(req),
+                permission: 'normal'
             })
             res.status(201).json({ username: user.username, message: `Created User: ${user.username}`})
         } catch (error) {

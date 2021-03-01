@@ -11,7 +11,7 @@ export default class AuthController {
         try {
             const user = await User.authenticate(req.body.username, req.body.password)
             
-            const payload: Payload = { username: user.username}
+            const payload: Payload = { username: user.username, permission: user.permission }
 
             const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
                 algorithm: 'HS256',

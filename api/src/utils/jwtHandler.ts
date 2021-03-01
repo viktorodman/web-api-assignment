@@ -16,11 +16,18 @@ export const authenticateJWT = (req, res, next): void => {
         const payload = jwt.verify(authorization[1], process.env.JWT_SECRET) as Payload
 
         req.user = {
-            username: payload.username
+            username: payload.username,
+            permission: payload.permission
         }
         
         next()
     } catch (error) {
         next(createHttpError(403))
     }
+}
+
+
+export const isAdmin = (req, res, next) => {
+    console.log(req.user)
+    req.user.permission === 'admin' ? next() : next(createHttpError(403))
 }
