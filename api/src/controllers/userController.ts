@@ -10,7 +10,27 @@ export default class UserController {
         try {
             const users = await User.getAll()
 
-            res.json({users})
+            console.log(req.protocol)
+            console.log(req.get('host'))
+            console.log(req.originalUrl)
+
+            const data = {
+                _links: {
+                    self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}` }
+                },
+                size: users.length,
+                _embedded: {
+                    user: users.map(user => ({
+                        _links: {
+                            self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}/${user.username}` }
+                        },
+                        username: user.username, 
+                        permission: user.permission 
+                    }))
+                }
+            }
+           
+            res.status(200).json(data)
         } catch (error) {
             
             res.json(error)
