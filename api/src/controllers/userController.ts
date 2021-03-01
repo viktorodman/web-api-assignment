@@ -1,10 +1,19 @@
 import { NextFunction, Request, Response } from "express";
+import UserRequest from "interfaces/IUserRequest";
 import User, { IUser } from '../models/user'
+
+
 
 export default class UserController {
 
-    public getAllUsers(req: Request, res: Response, next: NextFunction): void {
-        res.json('From get all users')
+    public getAllUsers(req, res: Response, next: NextFunction): void {
+        try {
+            console.log(req.user)
+            req
+        } catch (error) {
+            
+            res.json(error)
+        }
     }
 
     public async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
