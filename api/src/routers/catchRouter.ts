@@ -3,7 +3,7 @@ import * as express from 'express'
 import IRouter  from "../interfaces/IRouter"
 import { authenticateJWT, isAdmin } from '../utils/jwtHandler'
 
-export default class UserRouter implements IRouter{
+export default class CatchRouter implements IRouter{
     expressRouter: express.Router = express.Router()
     controller: UserController = new UserController()
     baseURL: string
@@ -13,7 +13,13 @@ export default class UserRouter implements IRouter{
     }
 
     public initializeRoutes(): void {
-        this.expressRouter.get('/', authenticateJWT, isAdmin, (req, res, next) => this.controller.getAllUsers(req, res, next))
-        this.expressRouter.post('/', (req, res, next) => this.controller.createUser(req, res, next))
+        this.expressRouter.get('/', 
+            authenticateJWT, 
+            (req, res, next) => this.controller.getAllCatches(req, res, next)
+        )
+        this.expressRouter.post('/', 
+            authenticateJWT, 
+            (req, res, next) => this.controller.createCatch(req, res, next)
+        )
     }
 }

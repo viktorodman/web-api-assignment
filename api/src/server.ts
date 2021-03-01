@@ -3,11 +3,12 @@ import * as logger from 'morgan'
 import * as helmet from 'helmet'
 import * as dotenv from 'dotenv'
 import App from './app'
+import { connectDB } from './config/mongoose'
 import IndexRouter from './routers/indexRouter'
 import FishRouter from './routers/fishRouter'
 import AuthRouter from './routers/authRouter'
-import { connectDB } from './config/mongoose'
 import UserRouter from './routers/userRouter'
+import CatchRouter from './routers/catchRouter'
 
 dotenv.config()
 
@@ -22,7 +23,8 @@ const main = async () => {
             new IndexRouter('/'),
             new FishRouter('/v1/fish'),
             new AuthRouter('/v1/auth'),
-            new UserRouter('/v1/users')
+            new UserRouter('/v1/users'),
+            new CatchRouter('/v1/catches')
         ],
         middleWares: [
             helmet(),
