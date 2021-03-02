@@ -9,11 +9,7 @@ export default class UserController {
     public async getAllUsers(req, res: Response, next: NextFunction): Promise<void> {
         try {
             const users = await User.getAll()
-
-            console.log(req.protocol)
-            console.log(req.get('host'))
-            console.log(req.originalUrl)
-
+            
             const data = {
                 _links: {
                     self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}` }

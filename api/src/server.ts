@@ -9,6 +9,7 @@ import FishRouter from './routers/fishRouter'
 import AuthRouter from './routers/authRouter'
 import UserRouter from './routers/userRouter'
 import CatchRouter from './routers/catchRouter'
+import WebhookRouter from 'routers/webhookRouter'
 
 dotenv.config()
 
@@ -24,7 +25,8 @@ const main = async () => {
             new FishRouter('/v1/fish'),
             new AuthRouter('/v1/auth'),
             new UserRouter('/v1/users'),
-            new CatchRouter('/v1/catches')
+            new CatchRouter('/v1/catches'),
+            new WebhookRouter('/v1/hooks')
         ],
         middleWares: [
             helmet(),
