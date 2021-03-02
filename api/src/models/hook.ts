@@ -12,6 +12,7 @@ export interface IHook extends mongoose.Document {
 }
 
 export interface IHookModel extends mongoose.Model<IHook> {
+    getAllUserHooks(username: string): Promise<Array<IHook>>
     getAll(): Promise<Array<IHook>>
     /* getById(id: string): Promise<ICatch>
     updateById(id: string, newValues: ICatch): Promise<ICatch>
@@ -37,6 +38,14 @@ HookSchema.post('save', function(error, doc, next) {
 
 HookSchema.statics.getAll = async function() {
     return this.find({})
+}
+
+HookSchema.statics.getAllUserHooks = async function(username: string) {
+    const hooks = await this.find({ user: username }) 
+
+    console.log(hooks, username)
+
+    return hooks
 }
 
 

@@ -9,7 +9,7 @@ import FishRouter from './routers/fishRouter'
 import AuthRouter from './routers/authRouter'
 import UserRouter from './routers/userRouter'
 import CatchRouter from './routers/catchRouter'
-import WebhookRouter from 'routers/webhookRouter'
+import WebhookRouter from './routers/webhookRouter'
 
 dotenv.config()
 
