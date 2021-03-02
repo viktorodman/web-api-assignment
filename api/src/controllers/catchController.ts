@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import createHttpError = require("http-errors");
-import Catch from "../models/catch";
+import Catch, { ICatch } from "../models/catch";
 
 
 export default class CatchController {
@@ -9,15 +9,7 @@ export default class CatchController {
         try {
             const fishCatch = await Catch.getById(req.params.id)
             
-            const data = {
-                _links: {
-                    self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}` }
-                },
-                fisher: fishCatch.fisher, 
-                fishSpecies: fishCatch.fishSpecies,
-                measurement: fishCatch.measurement,
-                location: fishCatch.location
-            }
+            const data = this.createCatchResponseObject(fishCatch, req)
 
             res.status(200).json(data)
         } catch (error) {
@@ -35,15 +27,7 @@ export default class CatchController {
                 },
                 size: catches.length,
                 _embedded: {
-                    catches: catches.map(c => ({
-                        _links: {
-                            self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}/${c._id}` }
-                        },
-                        fisher: c.fisher, 
-                        fishSpecies: c.fishSpecies,
-                        measurement: c.measurement,
-                        location: c.location
-                    }))
+                    catches: catches.map(c => this.createCatchResponseObject(c, req))
                 }
             }
             res.status(200).json(data)
@@ -78,26 +62,34 @@ export default class CatchController {
         try {
             const deletedCatch = await Catch.deleteById(req.params.id)
 
-            console.log(deletedCatch)
-
             res.status(201).json("From update")
         } catch (error) {
             next(error)
         }
     }
 
-    public async authorizeUser(req, res: Response, next: NextFunction) {
+    public async authorizeUser(req, res: Response, next: NextFunction): Promise<void> {
         try {
             const fishCatch = await Catch.getById(req.params.id)
 
-            if (req.user.username !== fishCatch.fisher) {
+            if (req.user.username !== fishCatch.fisher || req.user.permission !== 'admin') {
                 return next(new createHttpError.Forbidden())
             }
             next()
         } catch (error) {
-            /* return next(createHttpError(404)) */
-            /* next(new createHttpError.NotFound('Catch does not exist')) */
             next(error)
+        }
+    }
+
+    private createCatchResponseObject(fishCatch: ICatch, req) {
+        return{ 
+            _links: {
+                self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}/${fishCatch._id}` }
+            },
+            fisher: fishCatch.fisher, 
+            fishSpecies: fishCatch.fishSpecies,
+            measurement: fishCatch.measurement,
+            location: fishCatch.location
         }
     }
 }   

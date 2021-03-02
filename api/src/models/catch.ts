@@ -46,8 +46,8 @@ export const CatchSchema = new mongoose.Schema({
         },
     },
     location: {
-        city: { type: String, required: true},
-        lake: { type: String, required: true },
+        city: { type: String, required: [true, 'City is required']},
+        lake: { type: String, required: [true, 'Lake is required'] },
         latitude: { type: String, required: true },
         longitude: { type: String, required: true },
     }
@@ -57,8 +57,6 @@ export const CatchSchema = new mongoose.Schema({
 CatchSchema.post('save', function(error, doc, next) {
     if (error.name === 'ValidationError') {
         next(new createError.BadRequest(error.message))
-    } else if (error.name === 'MongoError' && error.code === 11000) {
-        next(new createError.Conflict('User already exist'))
     } else {
         next()
     }
