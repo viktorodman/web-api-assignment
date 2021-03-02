@@ -13,6 +13,7 @@ export default class App {
     public run() {
         this.setUpMiddlewares()
         this.setUpRouter()
+        this.handleErrors()
         this.listen()
     }
 
@@ -22,6 +23,19 @@ export default class App {
 
     private setUpRouter(): void {
         this.appInit.routers.forEach(router => this.app.use(router.baseURL, router.expressRouter))
+    }
+
+    private handleErrors(): void {
+        this.app.use(function (err, req, res, next) {
+            res
+            .status(err.status)
+            .json({
+                name: err.name,
+                status: err.status,
+                message: err.message
+            })
+            return
+        })
     }
 
     private listen(): void {

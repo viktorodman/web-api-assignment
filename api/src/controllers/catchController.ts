@@ -21,12 +21,7 @@ export default class CatchController {
 
             res.status(200).json(data)
         } catch (error) {
-            console.log(error.name)
-            if (error.name === 'NotFoundError') {
-                this.sendErrorResponse(res, error.status, error.name , error.message)     
-            } else {
-                this.sendErrorResponse(res, 400, 'BadRequestError', 'Something went wrong')
-            }
+            next(error)
         }
     }
 
@@ -53,11 +48,7 @@ export default class CatchController {
             }
             res.status(200).json(data)
         } catch (error) {
-            res.status(error.status).json({
-                status: error.status,
-                error: error.name,
-                message: error.message
-            })
+            next(error)
         }
     }
 
@@ -70,7 +61,7 @@ export default class CatchController {
             })
             res.status(201).json(fishCatch._id)
         } catch (error) {
-            res.json(error)
+            next(error)
         }
     }
 
@@ -78,11 +69,20 @@ export default class CatchController {
         try {
             const updatedCatch = await Catch.updateById(req.params.id, {fisher: req.user.username, ...req.body})
 
-            console.log(updatedCatch)
-
             res.status(204).json("From update")
         } catch (error) {
-            res.json('from update catch')
+            next(error)
+        }
+    }
+    public async deleteCatch(req, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const deletedCatch = await Catch.deleteById(req.params.id)
+
+            console.log(deletedCatch)
+
+            res.status(201).json("From update")
+        } catch (error) {
+            next(error)
         }
     }
 
@@ -95,15 +95,9 @@ export default class CatchController {
             }
             next()
         } catch (error) {
-            next(new createHttpError.NotFound('Catch does not exist'))
+            /* return next(createHttpError(404)) */
+            /* next(new createHttpError.NotFound('Catch does not exist')) */
+            next(error)
         }
-    }
-
-    private sendErrorResponse(res: Response, status: number, error: any , message: string) {
-        res.status(status).json({
-            status,
-            error,
-            message
-        })
     }
 }   

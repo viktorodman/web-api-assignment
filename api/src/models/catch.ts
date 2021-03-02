@@ -23,6 +23,7 @@ export interface ICatchModel extends mongoose.Model<ICatch> {
     getAll(): Promise<Array<ICatch>>
     getById(id: string): Promise<ICatch>
     updateById(id: string, newValues: ICatch): Promise<ICatch>
+    deleteById(id: string): Promise<void>
 }
 
 export const CatchSchema = new mongoose.Schema({
@@ -89,6 +90,14 @@ CatchSchema.statics.updateById = async function(id: string, newValues: ICatch) {
     }
 
     return updatedCatch
+}
+
+CatchSchema.statics.deleteById = async function(id: string) {
+    const deletedCatch = await this.deleteOne({ _id: id })
+
+    console.log(deletedCatch)
+
+    return deletedCatch
 }
 
 const Catch: ICatchModel = mongoose.model<ICatch, ICatchModel>('Catch', CatchSchema)

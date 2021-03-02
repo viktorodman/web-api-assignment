@@ -24,11 +24,7 @@ export default class AuthController {
                 access_token: accessToken
             })
         } catch (error) {
-            res.status(error.status).json({
-                status: error.status,
-                error: error.name,
-                message: error.message
-            })
+            next(error)
         }
     }
 }

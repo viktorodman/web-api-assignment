@@ -33,7 +33,7 @@ export default class UserController {
             res.status(200).json(data)
         } catch (error) {
             
-            res.json(error)
+            next(error)
         }
     }
 
@@ -46,27 +46,9 @@ export default class UserController {
             })
             res.status(201).json({ username: user.username, message: `Created User: ${user.username}`})
         } catch (error) {
-            this.handleUserCreationErrors(res, error)
+            next(error)
         }
        
-    }
-
-    private handleUserCreationErrors(res: Response, error: any): void {
-        if (error.name === 'ConflictError') {
-            this.sendErrorResponse(res, error.status, error.name , error.message)     
-        } else if (error.name === 'BadRequestError') {
-            this.sendErrorResponse(res, error.status, error.name , error.message)
-        } else {
-            this.sendErrorResponse(res, 400, 'BadRequestError', 'Something went wrong')
-        }
-    }
-
-    private sendErrorResponse(res: Response, status: number, error: any , message: string) {
-        res.status(status).json({
-            status,
-            error,
-            message
-        })
     }
 
     private getRequestUsername(req: Request): string {
@@ -75,9 +57,5 @@ export default class UserController {
 
     private getRequestPassword(req: Request): string {
         return req.body.password
-    }
-
-    private isValidationError(error: any): boolean {
-        return error.name === 'ValidationError'
     }
 }
