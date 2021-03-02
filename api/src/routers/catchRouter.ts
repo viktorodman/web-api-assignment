@@ -21,5 +21,14 @@ export default class CatchRouter implements IRouter{
             authenticateJWT, 
             (req, res, next) => this.controller.createCatch(req, res, next)
         )
+        this.expressRouter.get('/:id', 
+            authenticateJWT,
+            (req, res, next) => this.controller.getCatch(req, res, next)
+        )
+        this.expressRouter.put('/:id',
+            authenticateJWT,
+            (req, res, next) => this.controller.authorizeUser(req, res, next),
+            (req, res, next) => this.controller.updateCatch(req, res, next)
+        )
     }
 }

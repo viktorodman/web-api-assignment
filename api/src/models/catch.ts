@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose'
 /* import * as validator from 'validator' */
 import * as createError from 'http-errors'
+import createHttpError = require('http-errors')
 
 export interface ICatch extends mongoose.Document {
     fisher: string
@@ -20,6 +21,8 @@ export interface ICatch extends mongoose.Document {
 
 export interface ICatchModel extends mongoose.Model<ICatch> {
     getAll(): Promise<Array<ICatch>>
+    getById(id: string): Promise<ICatch>
+    updateById(id: string, newValues: ICatch): Promise<ICatch>
 }
 
 export const CatchSchema = new mongoose.Schema({
@@ -62,6 +65,30 @@ CatchSchema.post('save', function(error, doc, next) {
 
 CatchSchema.statics.getAll = async function() {
     return this.find({})
+}
+
+
+
+CatchSchema.statics.getById = async function(id) {
+    const fishCatch = await this.findOne({ _id: id })
+
+    if (!fishCatch) {
+        throw new createError.NotFound('Could not find catch')
+    }
+
+    return fishCatch
+}
+
+CatchSchema.statics.updateById = async function(id: string, newValues: ICatch) {
+    const updatedCatch = await this.updateOne({ _id: id }, {
+        ...newValues
+    })
+
+    if (updatedCatch.nModified !== 1) {
+        throw new createHttpError.Conflict('Failed to update catch')
+    }
+
+    return updatedCatch
 }
 
 const Catch: ICatchModel = mongoose.model<ICatch, ICatchModel>('Catch', CatchSchema)
