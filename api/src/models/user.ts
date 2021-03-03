@@ -11,6 +11,7 @@ export interface IUser extends mongoose.Document {
 
 export interface IUserModel extends mongoose.Model<IUser> {
     authenticate(username: string, password: string): Promise<IUser>,
+    getByUsername(username: string): Promise<IUser>
     getAll(): Promise<Array<IUser>>
 }
 
@@ -47,6 +48,16 @@ UserSchema.post('save', function(error, doc, next) {
         next()
     }
 })
+
+UserSchema.statics.getByUsername = async function(username) {
+    const user = await this.findOne({ username: username })
+
+    if (!user) {
+        throw new createError.NotFound('Could not find user')
+    }
+
+    return user
+}
 
 UserSchema.statics.getAll = async function() {
     return this.find({})

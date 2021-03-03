@@ -1,7 +1,7 @@
 import WebhookController from '../controllers/webhookController'
 import * as express from 'express'
 import IRouter  from "../interfaces/IRouter"
-import { authenticateJWT, isAdmin } from '../utils/jwtHandler'
+import { authenticateJWT } from '../utils/jwtHandler'
 
 export default class WebhookRouter implements IRouter{
     expressRouter: express.Router = express.Router()

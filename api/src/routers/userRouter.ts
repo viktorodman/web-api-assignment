@@ -1,7 +1,7 @@
 import UserController from '../controllers/userController'
 import * as express from 'express'
 import IRouter  from "../interfaces/IRouter"
-import { authenticateJWT, isAdmin } from '../utils/jwtHandler'
+import { authenticateJWT } from '../utils/jwtHandler'
 
 export default class UserRouter implements IRouter{
     expressRouter: express.Router = express.Router()
@@ -13,7 +13,7 @@ export default class UserRouter implements IRouter{
     }
 
     public initializeRoutes(): void {
-        this.expressRouter.get('/', authenticateJWT, isAdmin, (req, res, next) => this.controller.getAllUsers(req, res, next))
+        this.expressRouter.get('/:username', authenticateJWT, (req, res, next) => this.controller.getUser(req, res, next))
         this.expressRouter.post('/', (req, res, next) => this.controller.createUser(req, res, next))
     }
 }

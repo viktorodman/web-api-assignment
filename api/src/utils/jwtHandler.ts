@@ -25,9 +25,3 @@ export const authenticateJWT = (req, res, next): void => {
         next(createHttpError(403))
     }
 }
-
-
-export const isAdmin = (req, res, next) => {
-    console.log(req.user)
-    req.user.permission === 'admin' ? next() : next(createHttpError(403))
-}
