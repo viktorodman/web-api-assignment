@@ -10,7 +10,8 @@ export default class UserController {
     public async getUser(req, res: Response, next: NextFunction): Promise<void> {
         try {
             const user = await User.getByUsername(req.params.username)
-
+            
+            console.log(req.protocol)
             const data = {
                 _links: {
                     self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}` }

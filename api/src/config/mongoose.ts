@@ -15,6 +15,7 @@ export const connectDB = async () => {
     })
 
     console.log('Establishing a Mongoose connection')
+    console.log(process.env.DB_CONNECTION_STRING)
     return mongoose.connect(process.env.DB_CONNECTION_STRING, {
       useCreateIndex: true,
       useNewUrlParser: true,

@@ -9,11 +9,12 @@ export default class App {
     public constructor(private readonly appInit: AppInit) {
         // Empty
     }
-
+ 
     public run() {
         this.setUpMiddlewares()
         this.setUpRouter()
         this.handleErrors()
+        this.app.enable('trust proxy')
         this.listen()
     }
 

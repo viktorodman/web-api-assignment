@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "Rest API",
   "main": "index.js",
+  "engines": {
+    "node": "v14.15.0"
+  },
   "scripts": {
     "start:dev": "nodemon",
     "start": "ts-node dist/server.js",
-    "build": "tsc -p ."
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
