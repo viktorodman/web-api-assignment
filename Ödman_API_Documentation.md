@@ -38,7 +38,7 @@ Gets information about a specific user
 {
     "_links": {
         "self": {
-            "href": "https://api_url/v1/users/example-user"
+            "href": "https://catchthatfish-api.herokuapp.com/v1/users/example-user"
         }
     },
     "username": "example-user",
@@ -89,7 +89,7 @@ Gets a list of all catches by every user.
 
 "_links": {
     "self": {
-        "href": "https://api_url/v1/catches"
+        "href": "https://catchthatfish-api.herokuapp.com/v1/catches"
     }
 },
 "size": 1,
@@ -98,7 +98,7 @@ Gets a list of all catches by every user.
         {
             "_links": {
                 "self": {
-                    "href": "https://api_url/v1/catches/{catch_id}"
+                    "href": "https://catchthatfish-api.herokuapp.com/v1/catches/{catch_id}"
                 }
             },
             "fisher": "example-user",
@@ -143,7 +143,7 @@ Creates a new catch
 ```json
 {
     "catch_id": "catch_id",
-    "created_catch": "https://api_url/v1/catches/catch_id"
+    "created_catch": "https://catchthatfish-api.herokuapp.com/v1/catches/catch_id"
 }
 ```
 
@@ -165,7 +165,7 @@ Show information about a specific catch
 {
     "_links": {
         "self": {
-            "href": "https://api_url/v1/catches/:catch_id"
+            "href": "https://catchthatfish-api.herokuapp.com/v1/catches/:catch_id"
         }
     },
     "fisher": "example-user",
@@ -245,7 +245,7 @@ Gets all the logged in users registered webhooks.
 {
     "_links": {
         "self": {
-            "href": "https://api_url/v1/hooks"
+            "href": "https://catchthatfish-api.herokuapp.com/v1/hooks"
         }
     },
     "size": 1,
@@ -254,7 +254,7 @@ Gets all the logged in users registered webhooks.
             {
                 "_links": {
                     "self": {
-                        "href": "https://api_url/v1/hooks/hook_id"
+                        "href": "https://catchthatfish-api.herokuapp.com/v1/hooks/hook_id"
                     }
                 },
                 "id": "hook_id",
@@ -289,7 +289,7 @@ Gets a specific hook
 {
     "_links": {
         "self": {
-            "href": "https://api_url/v1/hooks/hook_id"
+            "href": "https://catchthatfish-api.herokuapp.com/v1/hooks/hook_id"
         }
     },
     "id": "hook_id",
@@ -324,7 +324,7 @@ Creates a new webhook
 ```json
 {
     "hook_id": "hook_id",
-    "created_hook": "http://api_url/v1/hooks/hook_id"
+    "created_hook": "http://catchthatfish-api.herokuapp.com/v1/hooks/hook_id"
 } 
 ```
 
