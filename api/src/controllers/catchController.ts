@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import createHttpError = require("http-errors");
+import { notifySubscribers } from "utils/hookPublisher";
 import Catch, { ICatch } from "../models/catch";
 
 
@@ -38,9 +39,9 @@ export default class CatchController {
 
     public async createCatch(req, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { fishSpecies, length, weight, city, lake, latitude, longitude } = req.body
             const fishCatch = await Catch.create(this.createCatchRequestObject(req))
             
+            await notifySubscribers(fishCatch)
 
             res.status(201).json({
                 catch_id: fishCatch._id,

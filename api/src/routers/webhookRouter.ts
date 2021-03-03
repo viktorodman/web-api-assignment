@@ -34,5 +34,11 @@ export default class WebhookRouter implements IRouter{
             (req, res, next) => this.controller.authorizeUser(req, res, next),
             (req, res, next) => this.controller.updateHook(req, res, next)
         )
+
+        this.expressRouter.delete('/:id',
+            authenticateJWT,
+            (req, res, next) => this.controller.authorizeUser(req, res, next),
+            (req, res, next) => this.controller.deleteHook(req, res, next)
+        )
     }
 }

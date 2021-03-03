@@ -47,6 +47,17 @@ export default class WebhookController {
             next(error)
         }
     }
+
+    public async deleteHook(req, res: Response, next: NextFunction): Promise<void> {
+        try {
+            await Hook.deleteById(req.params.id)
+
+            res.status(204).json()
+        } catch (error) {
+            next(error)
+        }
+    }
+
     public async registerHook(req, res: Response, next: NextFunction): Promise<void> {
         try {
             const hook = await Hook.create(this.getRequestHookDetails(req))

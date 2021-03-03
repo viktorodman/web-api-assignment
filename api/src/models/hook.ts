@@ -16,7 +16,7 @@ export interface IHookModel extends mongoose.Model<IHook> {
     getAll(): Promise<Array<IHook>>
     getById(id: string): Promise<IHook>
     updateById(id: string, newValues: IHook): Promise<IHook>
-    /* deleteById(id: string): Promise<void> */
+    deleteById(id: string): Promise<void>
 }
 
 export const HookSchema = new mongoose.Schema({
@@ -72,13 +72,11 @@ HookSchema.statics.updateById = async function(id: string, newValues: IHook) {
     return updatedCatch
 }
 
-/* HookSchema.statics.deleteById = async function(id: string) {
+HookSchema.statics.deleteById = async function(id: string) {
     const deletedCatch = await this.deleteOne({ _id: id })
 
-    console.log(deletedCatch)
-
     return deletedCatch
-} */
+}
 
 const Hook: IHookModel = mongoose.model<IHook, IHookModel>('Hook', HookSchema)
 
