@@ -43,21 +43,25 @@ HookSchema.statics.getAll = async function() {
 HookSchema.statics.getAllUserHooks = async function(username: string) {
     const hooks = await this.find({ user: username }) 
 
-    console.log(hooks, username)
-
     return hooks
 }
 
 
 
 HookSchema.statics.getById = async function(id) {
-    const hook = await this.findOne({ _id: id })
+    try {
+        const hook = await this.findOne({ _id: id })
 
-    if (!hook) {
+
+        if (!hook) {
+            throw new createError.NotFound('Could not find hook')
+        }
+    
+        return hook
+    } catch (error) {
         throw new createError.NotFound('Could not find hook')
     }
-
-    return hook
+   
 }
 
 HookSchema.statics.updateById = async function(id: string, newValues: IHook) {

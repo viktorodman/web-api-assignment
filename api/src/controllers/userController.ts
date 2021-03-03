@@ -43,7 +43,7 @@ export default class UserController {
         try {
             const user = await User.getByUsername(req.params.username)
 
-            if (req.user.username !== user.username || req.user.permission !== 'admin') {
+            if (req.user.username !== user.username && req.user.permission !== 'admin') {
                 return next(new createHttpError.Forbidden("You are not authorized to show that user"))
             }
             next()

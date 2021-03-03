@@ -5,7 +5,6 @@ import * as dotenv from 'dotenv'
 import App from './app'
 import { connectDB } from './config/mongoose'
 import IndexRouter from './routers/indexRouter'
-import FishRouter from './routers/fishRouter'
 import AuthRouter from './routers/authRouter'
 import UserRouter from './routers/userRouter'
 import CatchRouter from './routers/catchRouter'
@@ -22,7 +21,6 @@ const main = async () => {
         port: process.env.PORT,
         routers: [
             new IndexRouter('/'),
-            new FishRouter('/v1/fish'),
             new AuthRouter('/v1/auth'),
             new UserRouter('/v1/users'),
             new CatchRouter('/v1/catches'),

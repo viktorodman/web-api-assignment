@@ -10,7 +10,6 @@ export default class WebhookController {
     public async getHook(req, res: Response, next: NextFunction): Promise<void> {
         try {
             const hook = await Hook.getById(req.params.id)
-
             const data = this.createHookResponseObject(hook, req)
 
             res.status(200).json(data)
@@ -40,7 +39,7 @@ export default class WebhookController {
     
     public async updateHook(req, res: Response, next: NextFunction): Promise<void> {
         try {
-            const updatedCatch = await Hook.updateById(req.params.id, this.getRequestHookDetails(req))
+            await Hook.updateById(req.params.id, this.getRequestHookDetails(req))
 
             res.status(204).json()
         } catch (error) {

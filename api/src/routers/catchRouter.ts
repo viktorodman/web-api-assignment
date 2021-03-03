@@ -2,6 +2,7 @@ import UserController from '../controllers/catchController'
 import * as express from 'express'
 import IRouter  from "../interfaces/IRouter"
 import { authenticateJWT } from '../utils/jwtHandler'
+import createHttpError = require('http-errors')
 
 export default class CatchRouter implements IRouter{
     expressRouter: express.Router = express.Router()
@@ -39,5 +40,7 @@ export default class CatchRouter implements IRouter{
             (req, res, next) => this.controller.authorizeUser(req, res, next),
             (req, res, next) => this.controller.deleteCatch(req, res, next),
         )
+
+        this.expressRouter.use('*', (req, res, next) => next(createHttpError(404)))
     }
 }

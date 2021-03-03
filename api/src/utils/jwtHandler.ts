@@ -4,8 +4,14 @@ import Payload from 'types/payload'
 
 
 export const authenticateJWT = (req, res, next): void => {
+    if (!(req.headers.authorization)) {
+        next(createHttpError(401))
+        return
+    }
+
     const authorization = req.headers.authorization.split(' ')
 
+    
     if (authorization[0] !== 'Bearer') {
         next(createHttpError(401))
         return

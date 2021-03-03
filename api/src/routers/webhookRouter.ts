@@ -2,6 +2,7 @@ import WebhookController from '../controllers/webhookController'
 import * as express from 'express'
 import IRouter  from "../interfaces/IRouter"
 import { authenticateJWT } from '../utils/jwtHandler'
+import createHttpError = require('http-errors')
 
 export default class WebhookRouter implements IRouter{
     expressRouter: express.Router = express.Router()
@@ -40,5 +41,7 @@ export default class WebhookRouter implements IRouter{
             (req, res, next) => this.controller.authorizeUser(req, res, next),
             (req, res, next) => this.controller.deleteHook(req, res, next)
         )
+
+        this.expressRouter.use('*', (req, res, next) => next(createHttpError(404)))
     }
 }

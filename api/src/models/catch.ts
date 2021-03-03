@@ -69,13 +69,18 @@ CatchSchema.statics.getAll = async function() {
 
 
 CatchSchema.statics.getById = async function(id) {
-    const fishCatch = await this.findOne({ _id: id })
+    try {
+        const fishCatch = await this.findOne({ _id: id })
 
-    if (!fishCatch) {
+        if (!fishCatch) {
+            throw new createError.NotFound('Could not find catch')
+        }
+
+        return fishCatch
+    } catch (error) {
         throw new createError.NotFound('Could not find catch')
     }
-
-    return fishCatch
+    
 }
 
 CatchSchema.statics.updateById = async function(id: string, newValues: any) {

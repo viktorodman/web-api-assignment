@@ -2,6 +2,7 @@ import UserController from '../controllers/userController'
 import * as express from 'express'
 import IRouter  from "../interfaces/IRouter"
 import { authenticateJWT } from '../utils/jwtHandler'
+import createHttpError = require('http-errors')
 
 export default class UserRouter implements IRouter{
     expressRouter: express.Router = express.Router()
@@ -19,5 +20,7 @@ export default class UserRouter implements IRouter{
         (req, res, next) => this.controller.getUser(req, res, next))
 
         this.expressRouter.post('/', (req, res, next) => this.controller.createUser(req, res, next))
+
+        this.expressRouter.use('*', (req, res, next) => next(createHttpError(404)))
     }
 }

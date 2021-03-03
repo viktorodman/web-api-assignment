@@ -1,6 +1,7 @@
 import * as express from 'express'
 import IRouter  from "../interfaces/IRouter"
 import IndexController from "../controllers/indexController"
+import createHttpError = require('http-errors')
 
 export default class IndexRouter implements IRouter{
     controller: IndexController = new IndexController()

@@ -1,5 +1,4 @@
 import Hook, { IHook } from '../models/hook'
-import { ICatch } from '../models/catch'
 import axios from 'axios'
 
 
@@ -17,8 +16,6 @@ export const notifySubscribers = async (fishCatch: any) => {
                 method: 'POST',
                 timeout: 1000
             })
-
-           
 
             if (res.status === 200) {
                 console.log(`hook was successfully sent to: ${url}`)
