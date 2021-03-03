@@ -14,8 +14,7 @@ export default class CatchRouter implements IRouter{
     }
 
     public initializeRoutes(): void {
-        this.expressRouter.get('/', 
-            authenticateJWT, 
+        this.expressRouter.get('/',  
             (req, res, next) => this.controller.getAllCatches(req, res, next)
         )
 

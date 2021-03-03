@@ -1,4 +1,5 @@
 import * as express from 'express'
+import createHttpError = require('http-errors')
 import AuthController from '../controllers/authController'
 import IRouter  from "../interfaces/IRouter"
 
@@ -13,5 +14,6 @@ export default class AuthRouter implements IRouter{
 
     public initializeRoutes(): void {
         this.expressRouter.post('/login', (req, res, next) => this.controller.login(req, res, next))
+        this.expressRouter.use('*', (req, res, next) => next(createHttpError(404)))
     }
 }
