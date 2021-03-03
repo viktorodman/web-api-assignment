@@ -1,10 +1,23 @@
 import { NextFunction, Request, Response } from "express";
+import createHttpError = require("http-errors");
 import UserRequest from "interfaces/IUserRequest";
 import Hook, { IHook } from "../models/hook";
 
 
 
 export default class WebhookController {
+
+    public async getHook(req, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const hook = await Hook.getById(req.params.id)
+
+            const data = this.createHookResponseObject(hook, req)
+
+            res.status(200).json(data)
+        } catch (error) {
+            next(error)
+        }
+    }
 
     public async getAllHooks(req, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -15,7 +28,9 @@ export default class WebhookController {
                     self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}` }
                 }, 
                 size: hooks.length,
-                user_hooks: hooks.map(hook => this.createHookResponseObject(hook, req))
+                _embedded: {
+                    user_hooks: hooks.map(hook => this.createHookResponseObject(hook, req))
+                }
             }
             res.status(200).json(data)
         } catch (error) {
@@ -27,7 +42,23 @@ export default class WebhookController {
         try {
             const hook = await Hook.create(this.getRequestHookDetails(req))
             
-            res.json(hook)
+            res.status(201).json({
+                hook_id: hook._id,
+                created_hook: `${req.protocol}://${req.get('host')}${req.originalUrl}/${hook._id}`,                
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async authorizeUser(req, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const hook = await Hook.getById(req.params.id)
+
+            if (req.user.username !== hook.user && req.user.permission !== 'admin') {
+                return next(new createHttpError.Forbidden("You are not authorized to show that user"))
+            }
+            next()
         } catch (error) {
             next(error)
         }

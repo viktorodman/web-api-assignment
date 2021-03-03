@@ -14,8 +14,8 @@ export interface IHook extends mongoose.Document {
 export interface IHookModel extends mongoose.Model<IHook> {
     getAllUserHooks(username: string): Promise<Array<IHook>>
     getAll(): Promise<Array<IHook>>
-    /* getById(id: string): Promise<ICatch>
-    updateById(id: string, newValues: ICatch): Promise<ICatch>
+    getById(id: string): Promise<IHook>
+    /* updateById(id: string, newValues: ICatch): Promise<ICatch>
     deleteById(id: string): Promise<void> */
 }
 
@@ -50,17 +50,17 @@ HookSchema.statics.getAllUserHooks = async function(username: string) {
 
 
 
-/* HookSchema.statics.getById = async function(id) {
-    const fishCatch = await this.findOne({ _id: id })
+HookSchema.statics.getById = async function(id) {
+    const hook = await this.findOne({ _id: id })
 
-    if (!fishCatch) {
-        throw new createError.NotFound('Could not find catch')
+    if (!hook) {
+        throw new createError.NotFound('Could not find hook')
     }
 
-    return fishCatch
+    return hook
 }
 
-HookSchema.statics.updateById = async function(id: string, newValues: ICatch) {
+/* HookSchema.statics.updateById = async function(id: string, newValues: ICatch) {
     const updatedCatch = await this.updateOne({ _id: id }, {
         ...newValues
     })
@@ -78,8 +78,8 @@ HookSchema.statics.deleteById = async function(id: string) {
     console.log(deletedCatch)
 
     return deletedCatch
-} */
-
+}
+ */
 const Hook: IHookModel = mongoose.model<IHook, IHookModel>('Hook', HookSchema)
 
 export default Hook
