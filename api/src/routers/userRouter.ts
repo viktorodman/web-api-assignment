@@ -13,7 +13,11 @@ export default class UserRouter implements IRouter{
     }
 
     public initializeRoutes(): void {
-        this.expressRouter.get('/:username', authenticateJWT, (req, res, next) => this.controller.getUser(req, res, next))
+        this.expressRouter.get('/:username', 
+        authenticateJWT,
+        (req, res, next) => this.controller.authorizeUser(req, res, next),
+        (req, res, next) => this.controller.getUser(req, res, next))
+
         this.expressRouter.post('/', (req, res, next) => this.controller.createUser(req, res, next))
     }
 }

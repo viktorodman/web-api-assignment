@@ -22,7 +22,7 @@ export interface ICatch extends mongoose.Document {
 export interface ICatchModel extends mongoose.Model<ICatch> {
     getAll(): Promise<Array<ICatch>>
     getById(id: string): Promise<ICatch>
-    updateById(id: string, newValues: ICatch): Promise<ICatch>
+    updateById(id: string, newValues: any): Promise<ICatch>
     deleteById(id: string): Promise<void>
 }
 
@@ -78,7 +78,7 @@ CatchSchema.statics.getById = async function(id) {
     return fishCatch
 }
 
-CatchSchema.statics.updateById = async function(id: string, newValues: ICatch) {
+CatchSchema.statics.updateById = async function(id: string, newValues: any) {
     const updatedCatch = await this.updateOne({ _id: id }, {
         ...newValues
     })

@@ -38,12 +38,14 @@ export default class CatchController {
 
     public async createCatch(req, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log(req.body)
-            const fishCatch = await Catch.create({
-                fisher: req.user.username,
-               ...req.body
+            const { fishSpecies, length, weight, city, lake, latitude, longitude } = req.body
+            const fishCatch = await Catch.create(this.createCatchRequestObject(req))
+            
+
+            res.status(201).json({
+                catch_id: fishCatch._id,
+                created_catch: `${req.protocol}://${req.get('host')}${req.originalUrl}/${fishCatch._id}`,                
             })
-            res.status(201).json(fishCatch._id)
         } catch (error) {
             next(error)
         }
@@ -51,9 +53,10 @@ export default class CatchController {
 
     public async updateCatch(req, res: Response, next: NextFunction): Promise<void> {
         try {
-            const updatedCatch = await Catch.updateById(req.params.id, {fisher: req.user.username, ...req.body})
+            console.log('here')
+            const updatedCatch = await Catch.updateById(req.params.id, this.createCatchRequestObject(req))
 
-            res.status(204).json("From update")
+            res.status(204).json()
         } catch (error) {
             next(error)
         }
@@ -62,7 +65,7 @@ export default class CatchController {
         try {
             const deletedCatch = await Catch.deleteById(req.params.id)
 
-            res.status(201).json("From update")
+            res.status(204).json()
         } catch (error) {
             next(error)
         }
@@ -72,12 +75,30 @@ export default class CatchController {
         try {
             const fishCatch = await Catch.getById(req.params.id)
 
-            if (req.user.username !== fishCatch.fisher || req.user.permission !== 'admin') {
+            if (req.user.username !== fishCatch.fisher && req.user.permission !== 'admin') {
                 return next(new createHttpError.Forbidden())
             }
             next()
         } catch (error) {
             next(error)
+        }
+    }
+
+    private createCatchRequestObject(req) {
+        const { fishSpecies, length, weight, city, lake, latitude, longitude } = req.body
+        return {
+            fisher: req.user.username,
+            fishSpecies,
+            measurement: {
+                length,
+                weight
+            },
+            location: {
+                city,
+                lake,
+                latitude: latitude || "",
+                longitude: longitude || ""
+            } 
         }
     }
 
