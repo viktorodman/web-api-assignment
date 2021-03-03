@@ -53,7 +53,6 @@ export default class CatchController {
 
     public async updateCatch(req, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log('here')
             const updatedCatch = await Catch.updateById(req.params.id, this.createCatchRequestObject(req))
 
             res.status(204).json()

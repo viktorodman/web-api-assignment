@@ -18,11 +18,11 @@ export default class WebhookController {
             next(error)
         }
     }
-
+    
     public async getAllHooks(req, res: Response, next: NextFunction): Promise<void> {
         try {
             const hooks = await Hook.getAllUserHooks(req.user.username)
-
+            
             const data = {
                 _links: {
                     self: { href: `${req.protocol}://${req.get('host')}${req.originalUrl}` }
@@ -38,6 +38,15 @@ export default class WebhookController {
         }
     }
     
+    public async updateHook(req, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const updatedCatch = await Hook.updateById(req.params.id, this.getRequestHookDetails(req))
+
+            res.status(204).json()
+        } catch (error) {
+            next(error)
+        }
+    }
     public async registerHook(req, res: Response, next: NextFunction): Promise<void> {
         try {
             const hook = await Hook.create(this.getRequestHookDetails(req))
